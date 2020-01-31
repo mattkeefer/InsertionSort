@@ -12,9 +12,11 @@ public class InsertionUI extends GBFrame {
 	JButton sortButton = addButton("Sort", 3,4,1,1);
 	
 	Sorter s;
+	int count;
 	
 	public InsertionUI() {
 		sortButton.setEnabled(false);
+		count = 0;
 	}
 	
 	public static void main(String[] args) {
@@ -27,17 +29,28 @@ public class InsertionUI extends GBFrame {
 	
 	public void buttonClicked(JButton button) {
 		if(button == resetButton) {
+			count = 0;
 			inputField.setText("");
 			inputLabel.setText("Input string of numbers:");
 			sortButton.setEnabled(false);
 		}
 		if(button == inputButton) {
 			try {
-				s = new Sorter(inputField.getText().trim());
+				if(count==0) {
+					s = new Sorter(inputField.getText().trim());
+					sortButton.setEnabled(true);
+					count++;
+				}
+				else {
+					s.add(inputField.getText().trim());
+				}
+				
 			}
 			catch(FormatException e) {
 				messageBox(e.getMessage());
 			}
+			inputField.setText("");
+			inputLabel.setText(s.toString());
 		}
 	}
 }
