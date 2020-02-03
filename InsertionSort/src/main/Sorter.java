@@ -54,12 +54,12 @@ public class Sorter {
 		}
 	}
 	
-	private String getMean() {
+	private double getMean() {
 		int sum = 0;
 		for(int i=0; i<size; i++) {
 			sum += arr[i];
 		}
-		return String.format("%.3f", sum/(double)size);
+		return sum/(double)size;
 	}
 	
 	private String getMode() {
@@ -86,16 +86,24 @@ public class Sorter {
 		return String.format("%.3f", (arr[size/2]+arr[size/2+1])/2.0);
 	}
 	
-//	private String getDeviation() {
-//		
-//	}
+	private String getDeviation() {
+		double[] dev = new double[size];
+		for(int i=0; i<size; i++) {
+			dev[i] = Math.pow(arr[i]-getMean(), 2);
+		}
+		double sum = 0;
+		for(double d : dev) {
+			sum += d;
+		}
+		return String.format("%.3f", Math.sqrt(sum/size));
+	}
 	
 	public String getOutput() {
 		String out = "";
-		out += "Mean: " + getMean() + "\n";
+		out += "Mean: " + String.format("%.3f", getMean()) + "\n";
 		out += "Mode: " + getMode() + "\n";
 		out += "Median: " + getMedian() + "\n";
-		//out += "Standard Deviation: " + getDeviation() + "\n";
+		out += "Standard Deviation: " + getDeviation() + "\n";
 		return out;
 	}
 	
