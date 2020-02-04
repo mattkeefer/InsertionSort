@@ -1,5 +1,7 @@
 package main;
 import java.awt.Color;
+import java.awt.Font;
+
 import javax.swing.*;
 import BreezySwing.*;
 
@@ -16,6 +18,8 @@ public class InsertionUI extends GBFrame {
 	
 	public InsertionUI() {
 		count = 0;
+		output.setFont(new Font("Arial", Font.TRUETYPE_FONT, 15));
+		output.setEditable(false);
 	}
 	
 	public static void main(String[] args) {
@@ -36,7 +40,7 @@ public class InsertionUI extends GBFrame {
 		if(button == inputButton) {
 			try {
 				if(count==0) {
-					s = new Sorter(inputField.getText().trim());
+					s = new Sorter(inputField.getText().trim()); //creates new list (Sorter object)
 					count++;
 				}
 				else {
@@ -52,13 +56,14 @@ public class InsertionUI extends GBFrame {
 				}
 				else {
 					inputLabel.setText(s.toString());
+					startSort();
 				}
 			}
 			inputField.setText("");
 		}
 	}
 	
-	private void startSort() {
+	private void startSort() { //method replaces sort button previously included in program, makes program more seamless
 		s.sort();
 		inputLabel.setText(s.toString());
 		output.setText(s.getOutput());
