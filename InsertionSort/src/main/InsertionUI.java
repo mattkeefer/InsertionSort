@@ -24,7 +24,7 @@ public class InsertionUI extends GBFrame {
 		JFrame frm = new InsertionUI();
 		frm.getContentPane().setBackground(new Color(255, 204, 94));
 		frm.setTitle("Insertion Sort");
-		frm.setSize(400, 200);
+		frm.setSize(400, 250);
 		frm.setVisible(true);
 	}
 	
@@ -46,12 +46,18 @@ public class InsertionUI extends GBFrame {
 				else {
 					s.add(inputField.getText().trim());
 				}
+				inputLabel.setText(s.toString());
 			}
 			catch(FormatException e) {
 				messageBox(e.getMessage());
+				if(count==0) {
+					inputLabel.setText("Input string of numbers:");
+				}
+				else {
+					inputLabel.setText(s.toString());
+				}
 			}
 			inputField.setText("");
-			inputLabel.setText(s.toString());
 		}
 		if(button == sortButton) {
 			s.sort();

@@ -14,9 +14,7 @@ public class Sorter {
 	}
 	
 	private void addToArray() {
-		for(int i=size; i<input.size(); i++) {
-			arr[i] = input.get(i);
-		}
+		arr[size] = input.get(size);
 	}
 	
 	public void add(String str) throws FormatException {
@@ -30,9 +28,9 @@ public class Sorter {
 					throw new FormatException("Max of 25 numbers accepted.");
 				}
 				input.add(Integer.parseInt(s.trim()));
+				addToArray();
+				size = input.size();
 			}
-			addToArray();
-			size = input.size();
 		}
 		catch(NumberFormatException e) {
 			throw new FormatException("Invalid input.");
@@ -42,8 +40,8 @@ public class Sorter {
 	public void sort() { //uses insertion sort
 		int hole;
 		int val;
-		System.out.println(size);
-		for(int i=1; i<=size; i++) {
+		getArray(); //helps with error checking
+		for(int i=1; i<size; i++) {
 			hole = i;
 			val = arr[i];
 			while(hole>0 && arr[hole-1]>val) {
@@ -51,6 +49,7 @@ public class Sorter {
 				hole -= 1;
 			}
 			arr[hole] = val;
+			getArray(); //helps with error checking
 		}
 	}
 	
@@ -63,27 +62,50 @@ public class Sorter {
 	}
 	
 	private String getMode() {
-		int mode = 1;
+		int modeCount = 1;
 		int count = 1;
+		ArrayList<Integer> mode = new ArrayList<>();
 		for(int i=0; i<size-1; i++) {
 			if(arr[i]==arr[i+1]) {
 				count++;
 			}
-			if(count>mode) {
-				mode = count;
+			if(arr[i]!=arr[i+1] || i==size-2) {
+				if(count>modeCount) {
+					mode.clear();
+					mode.add(arr[i]);
+					modeCount = count;
+					count = 1;
+				}
+				else if(count==modeCount && modeCount>1) {
+					mode.add(arr[i]);
+					count = 1;
+				}
 			}
 		}
-		if(mode==1) {
+		if(mode.isEmpty()) {
 			return "None";
 		}
-		return String.format("%d", mode);
+		String out = "";
+		for(int i : mode) {
+			if(i==mode.get(0)) {
+				out += String.format("%d", i);
+			}
+			else {
+				out += ", " + String.format("%d", i);
+			}
+		}
+		return out;
 	}
 	
 	private String getMedian() {
 		if(size%2!=0) {
 			return String.format("%d", arr[size/2]);
 		}
-		return String.format("%.3f", (arr[size/2]+arr[size/2+1])/2.0);
+		double median = (arr[size/2-1]+arr[size/2])/2.0;
+		if(median==(int)median) {
+			return String.format("%d", (int)median);
+		}
+		return String.format("%.3f", median);
 	}
 	
 	private String getDeviation() {
@@ -98,16 +120,28 @@ public class Sorter {
 		return String.format("%.3f", Math.sqrt(sum/size));
 	}
 	
+	private void getArray() {
+		for(int i: arr) {
+			System.out.print(String.format("%d", i) + " ");
+		}
+		System.out.print("\n");
+	}
+	
 	public String getOutput() {
 		String out = "";
 		out += "Mean: " + String.format("%.3f", getMean()) + "\n";
-		out += "Mode: " + getMode() + "\n";
+		if(getMode().contains(",")) {
+			out += "Modes: " + getMode() + "\n";
+		}
+		else {
+			out += "Mode: " + getMode() + "\n";
+		}
 		out += "Median: " + getMedian() + "\n";
 		out += "Standard Deviation: " + getDeviation() + "\n";
 		return out;
 	}
 	
-	public String toString() { //works for arr inputs
+	public String toString() {
 		String out = String.format("%d", arr[0]);
 		for(int i=1; i<size; i++) {
 			out += ", " + String.format("%d", arr[i]);
