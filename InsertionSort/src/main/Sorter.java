@@ -40,7 +40,6 @@ public class Sorter {
 	public void sort() { //uses insertion sort
 		int hole;
 		int val;
-		getArray(); //helps with error checking
 		for(int i=1; i<size; i++) {
 			hole = i;
 			val = arr[i];
@@ -49,7 +48,6 @@ public class Sorter {
 				hole -= 1;
 			}
 			arr[hole] = val;
-			getArray(); //helps with error checking
 		}
 	}
 	
@@ -62,26 +60,53 @@ public class Sorter {
 	}
 	
 	private String getMode() {
-		int modeCount = 1;
-		int count = 1;
 		ArrayList<Integer> mode = new ArrayList<>();
-		for(int i=0; i<size-1; i++) {
-			if(arr[i]==arr[i+1]) {
-				count++;
+		int modeCount =1;
+		int count;
+		for(int i=0; i<size; i++) {
+			count = 0;
+			for(int j=0; j<size; j++) {
+				if(arr[i] == arr[j]) {
+					count++;
+				}
 			}
-			if(arr[i]!=arr[i+1] || i==size-2) {
-				if(count>modeCount) {
-					mode.clear();
-					mode.add(arr[i]);
-					modeCount = count;
-					count = 1;
-				}
-				else if(count==modeCount && modeCount>1) {
-					mode.add(arr[i]);
-					count = 1;
-				}
+			if(count>modeCount) {
+				mode.clear();
+				mode.add(arr[i]);
+				modeCount = count;
+			}
+			else if(count==modeCount && modeCount>1) {
+				mode.add(arr[i]);
 			}
 		}
+		System.out.println(mode);
+		
+		
+		
+		
+//		int modeCount = 1;
+//		int count = 1;
+//		ArrayList<Integer> mode = new ArrayList<>();
+//		for(int i=1; i<size; i++) {
+//			if(arr[i]==arr[i-1]) {
+//				count++;
+//				System.out.println(count + " " + modeCount + " " + mode);
+//			}
+//			if(arr[i]!=arr[i-1] || i==size-1) {
+//				if(count>modeCount) {
+//					mode.clear();
+//					mode.add(arr[i-1]);
+//					modeCount = count;
+//					count = 1;
+//					System.out.println("\n");
+//				}
+//				else if(count==modeCount && modeCount>1) {
+//					mode.add(arr[i-1]);
+//					count = 1;
+//					System.out.println("\n");
+//				}
+//			}
+//		}
 		if(mode.isEmpty()) {
 			return "None";
 		}
@@ -120,23 +145,16 @@ public class Sorter {
 		return String.format("%.3f", Math.sqrt(sum/size));
 	}
 	
-	private void getArray() {
-		for(int i: arr) {
-			System.out.print(String.format("%d", i) + " ");
-		}
-		System.out.print("\n");
-	}
-	
 	public String getOutput() {
 		String out = "";
 		out += "Mean: " + String.format("%.3f", getMean()) + "\n";
+		out += "Median: " + getMedian() + "\n"; 
 		if(getMode().contains(",")) {
 			out += "Modes: " + getMode() + "\n";
 		}
 		else {
 			out += "Mode: " + getMode() + "\n";
 		}
-		out += "Median: " + getMedian() + "\n";
 		out += "Standard Deviation: " + getDeviation() + "\n";
 		return out;
 	}

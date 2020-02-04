@@ -5,18 +5,16 @@ import BreezySwing.*;
 
 public class InsertionUI extends GBFrame {
 
-	JLabel inputLabel = addLabel("Input string of numbers:", 1,1,4,1);
+	JLabel inputLabel = addLabel("Input string of numbers:", 1,1,2,1);
 	JButton inputButton = addButton("Input", 3,1,1,1);
-	JTextField inputField = addTextField("", 2,1,4,1);
-	JButton resetButton = addButton("Reset", 3,3,1,1);
-	JButton sortButton = addButton("Sort", 3,4,1,1);
-	JTextArea output = addTextArea("", 4,1,4,1);
+	JTextField inputField = addTextField("", 2,1,2,1);
+	JButton resetButton = addButton("Reset", 3,2,1,1);
+	JTextArea output = addTextArea("", 4,1,2,1);
 	
 	Sorter s;
 	int count;
 	
 	public InsertionUI() {
-		sortButton.setEnabled(false);
 		count = 0;
 	}
 	
@@ -34,19 +32,18 @@ public class InsertionUI extends GBFrame {
 			inputField.setText("");
 			output.setText("");
 			inputLabel.setText("Input string of numbers:");
-			sortButton.setEnabled(false);
 		}
 		if(button == inputButton) {
 			try {
 				if(count==0) {
 					s = new Sorter(inputField.getText().trim());
-					sortButton.setEnabled(true);
 					count++;
 				}
 				else {
 					s.add(inputField.getText().trim());
 				}
 				inputLabel.setText(s.toString());
+				startSort();
 			}
 			catch(FormatException e) {
 				messageBox(e.getMessage());
@@ -59,10 +56,11 @@ public class InsertionUI extends GBFrame {
 			}
 			inputField.setText("");
 		}
-		if(button == sortButton) {
-			s.sort();
-			inputLabel.setText(s.toString());
-			output.setText(s.getOutput());
-		}
+	}
+	
+	private void startSort() {
+		s.sort();
+		inputLabel.setText(s.toString());
+		output.setText(s.getOutput());
 	}
 }
